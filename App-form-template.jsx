@@ -2,10 +2,41 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
-  
+
   return (
     <div className="container mt-5">
       <h1 className="text-center mb-5">Student Management</h1>
+
+      <table className="table table-bordered mb-5">
+        <thead>
+          <tr >
+            <th className='bg-light'>ID</th>
+            <th className='bg-light'>Name</th>
+            <th className='bg-light'>Gender</th>
+            <th className='bg-light'>Section</th>
+            <th className='bg-light'>Hobby</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Thomas Jefferson</td>
+            <td>Male</td>
+            <td>BSIT-3A</td>
+            <td>Dota 2</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Steven Adams</td>
+            <td>Female</td>
+            <td>BSIT-3D</td>
+            <td>ML</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr className="my-4" />
+
       <div className="row">
         {/* Add Student Form */}
         <div className="col-md-4">
