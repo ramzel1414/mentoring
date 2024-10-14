@@ -1,12 +1,20 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
 dotenv.config();
 
 const port  = process.env.PORT;
+
+// CORS configuration
+const corsOptions = {
+  origin: ["http://localhost:3000"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // Routes
 const studentRoute = require('./routes/studentRoute.js');
