@@ -1,7 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
+
+  const [students, setStudents] = useState([]);
+
+  // Function to fetch students from the API
+  const fetchStudents = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/student/');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setStudents(data); // Update state with student data
+    } catch (error) {
+      console.error('Error fetching students:', error);
+    }
+  };
+
+  // useEffect to fetch data on component mount
+  useEffect(() => {
+    fetchStudents(); // Call fetchStudents when the component mounts
+  }, []);
 
   return (
     <div className="container mt-5">
@@ -18,20 +39,21 @@ const App = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Thomas Jefferson</td>
-            <td>Male</td>
-            <td>BSIT-3A</td>
-            <td>Dota 2</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Steven Adams</td>
-            <td>Female</td>
-            <td>BSIT-3D</td>
-            <td>ML</td>
-          </tr>
+          {students.length > 0 ? (
+            students.map(student => (
+              <tr key={student._id}>
+                <td>{student._id}</td>
+                <td>{student.name}</td>
+                <td>{student.gender}</td>
+                <td>{student.section}</td>
+                <td>{student.hobby}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" className="text-center">No students found</td>
+            </tr>
+          )}
         </tbody>
       </table>
 
