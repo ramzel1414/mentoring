@@ -1,23 +1,27 @@
-const mongoose = require('mongoose');
-const {Schema} = mongoose
+import mongoose, { mongo } from 'mongoose'
+const { Schema } = mongoose
 
 const studentSchema = new Schema({
+
   name: {
     type: String,
     required: true
   },
+
   gender: {
     type: String,
     required: true
   },
+
   section: {
     type: String,
     required: true
   },
+
   hobby: {
-    type: String,
+    type: String
   }
 })
 
 const studentModel = mongoose.model("student", studentSchema);
-module.exports = studentModel;
+export default studentModel;

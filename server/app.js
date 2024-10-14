@@ -1,47 +1,45 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-const cors = require('cors');
+import express from 'express'
+import mongoose, { mongo } from 'mongoose'
+import cors from 'cors'
+import dotenv from 'dotenv'
 
-const app = express();
-app.use(express.json());
-dotenv.config();
+const app = express()
+dotenv.config()
+app.use(express.json())
 
-const port  = process.env.PORT;
+// Routes
+import studentRoute from './routes/studentRoute.js'
 
-// CORS configuration
+// API's
+app.use('/api/student', studentRoute);
+
+const port = process.env.PORT
+
+// CORS SETUP
 const corsOptions = {
   origin: ["http://localhost:3000"],
   credentials: true,
 };
 app.use(cors(corsOptions));
 
-// Routes
-const studentRoute = require('./routes/studentRoute.js');
-
-// API's
-app.use('/api/student', studentRoute);
-
-//MongoDB Database Connection
+// Establishing Connection
 const connect = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB);
-  } catch(error) {
-    console.error('MongoDB Connection Error');
-    process.exit(1);
+    await mongoose.connect(process.env.MONGODB)
+  } catch (error) {
+    console.log(error);
   }
 }
 
 mongoose.connection.on('disconnected', () => {
-  console.log('Disconnected to MongoDB');
+  console.log('Disconnected from MongoDB')
 })
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to MongoDB');
 })
 
-connect();
-
 app.listen(port, () => {
-  console.log(`Connected to Port: ${port}`)
+  connect();
+  console.log(`Connected to PORT ${port}`);
 })

@@ -1,17 +1,19 @@
-const express = require('express');
-const router = express.Router();
-const { getStudents, getStudent, postStudent } = require('../controllers/studentController.js');
+import express from 'express'
+import { getStudents, getStudent, postStudent, updateStudent, deleteStudent } from '../controllers/studentController.js'
 
-// GET
+const router = express.Router();
+
 router.get('/', getStudents);
 
-//GET SPECIFIC
 router.get('/:id', getStudent);
 
-//POST
 router.post('/', postStudent);
 
-module.exports = router;
+router.put('/:id', updateStudent);
+
+router.delete('/:id', deleteStudent);
+
+export default router;
 
 
 

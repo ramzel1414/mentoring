@@ -1,35 +1,48 @@
-const Student = require('../models/student.js');
+import Student from '../models/student.js'
 
 const getStudents = async (req, res) => {
   try {
-    const students = await Student.find();
-    res.send(students);
+    const student = await Student.find();
+    res.send(student);
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
+}
 
 const getStudent = async (req, res) => {
   try {
-    const student = await Student.findById(req.params.id);
+    const student = await Student.findById(req.params.id)
     res.send(student);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const postStudent = async (req, res) => {
+  try {
+    const student = new Student(req.body);
+    const savedStudent = await student.save();
+    res.status(200).json(savedStudent);
   } catch (error) {
     console.log(error);
   }
 };
 
-const postStudent = async (req, res, next) => {
+const updateStudent = async (req, res) => {
   try {
-    const student = new Student(req.body);
-    const savedStudent = await student.save();
-    res.status(201).json(savedStudent);
-  } catch(error) {
-    console.log(error);
+    const updatedStudent = await Student.findByIdAndUpdate(req.params.id, req.body)
+    res.status(200).json(updatedStudent);
+  } catch (error) {
+    console.log(error)
   }
-};
-
-module.exports = {
-  getStudents,
-  getStudent,
-  postStudent
 }
+
+const deleteStudent = async (req, res) => {
+  try {
+    const student = await Student.findByIdAndDelete(req.params.id)
+    res.status(200).json(`Student has been deleted`)
+  } catch (error) {
+    console.log(error)
+  }
+}
+export { getStudents, getStudent, postStudent, updateStudent, deleteStudent };
