@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
-
+  //GET ========================================
   const [students, setStudents] = useState([]);
 
   // Function to fetch students from the API
@@ -23,6 +23,31 @@ const App = () => {
   useEffect(() => {
     fetchStudents(); // Call fetchStudents when the component mounts
   }, []);
+
+
+  //DELETE ========================================
+  const [deleteId, setDeleteId] = useState('');
+
+  const handleDeleteChange = (e) => {
+    setDeleteId(e.target.value); // Accesses the current value of the input field
+  };
+  
+  const handleDeleteSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:8000/api/student/${deleteId}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete student');
+      }
+      await fetchStudents(); // Refresh the list of students
+      setDeleteId(''); // Reset the input field
+    } catch (error) {
+      console.error('Error deleting student:', error);
+    }
+  };
+
 
   return (
     <div className="container mt-5">
@@ -60,6 +85,7 @@ const App = () => {
       <hr className="my-4" />
 
       <div className="row">
+
         {/* Add Student Form */}
         <div className="col-md-4">
           <h3>Add Student</h3>
@@ -167,13 +193,15 @@ const App = () => {
         {/* Delete Student Form */}
         <div className="col-md-4">
           <h3>Delete Student</h3>
-          <form>
+          <form onSubmit={handleDeleteSubmit}>
             <div className="mb-3">
               <label htmlFor="deleteId" className="form-label">Student ID</label>
               <input
                 type="text"
                 className="form-control"
                 id="deleteId"
+                value={deleteId}
+                onChange={handleDeleteChange}
                 required
               />
             </div>

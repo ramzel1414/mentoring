@@ -22,7 +22,7 @@ const postStudent = async (req, res) => {
   try {
     const student = new Student(req.body);
     const savedStudent = await student.save();
-    res.status(200).json(savedStudent);
+    res.status(201).json(savedStudent);
   } catch (error) {
     console.log(error);
   }
