@@ -9,9 +9,9 @@ router.get('/:id', getStudent);
 
 router.post('/', postStudent);
 
-router.put('/', updateStudent);
+router.put('/:id', updateStudent);
 
-router.delete('/', deleteStudent);
+router.delete('/:id', deleteStudent);
 
 export default router;
 
