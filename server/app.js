@@ -7,6 +7,14 @@ const app = express()
 dotenv.config()
 app.use(express.json())
 
+// CORS SETUP
+const corsOptions = {
+  origin: ["http://localhost:3000"],
+  credentials: false,
+};
+
+app.use(cors(corsOptions));
+
 // Routes
 import studentRoute from './routes/studentRoute.js'
 
@@ -14,13 +22,6 @@ import studentRoute from './routes/studentRoute.js'
 app.use('/api/student', studentRoute);
 
 const port = process.env.PORT
-
-// CORS SETUP
-const corsOptions = {
-  origin: ["http://localhost:3000"],
-  credentials: true,
-};
-app.use(cors(corsOptions));
 
 // Establishing Connection
 const connect = async () => {

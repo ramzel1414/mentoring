@@ -9,28 +9,25 @@ router.get('/:id', getStudent);
 
 router.post('/', postStudent);
 
-router.put('/:id', updateStudent);
+router.put('/', updateStudent);
 
-router.delete('/:id', deleteStudent);
+router.delete('/', deleteStudent);
 
 export default router;
-
-
 
 // CLIENT REQUEST SIMULATION POSTMAN ALTERNATIVE
 
 //sending request / Post method / adding student
-const addStudent = async (student) => {
-  const response = await fetch('http://localhost:8000/api/student', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(student), // Send the post object as JSON
-  });
+// const addStudent = async (student) => {
+//   const response = await fetch('http://localhost:8000/api/student', {
+//       method: 'POST',
+//       headers: {
+//           'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(student), // Send the post object as JSON
+//   });
   
-  console.log(await response.json()); // Parse the response data as JSON
+//   console.log(await response.json()); // Parse the response data as JSON
 
-
-};
-addStudent({ name: 'rambo afd', gender: 'Male', section: 'BSIT 4a'});   // invoking the addPost function
+// };
+// addStudent({ name: 'rambo afd', gender: 'Male', section: 'BSIT 4a'});   // invoking the addPost function
