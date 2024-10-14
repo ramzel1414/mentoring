@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
-  //GET ========================================
+  //GET ======================================== >
   const [students, setStudents] = useState([]);
 
   // Function to fetch students from the API
@@ -25,7 +25,44 @@ const App = () => {
   }, []);
 
 
-  //DELETE ========================================
+  // POST ======================================== >
+  const [newStudent, setNewStudent] = useState({
+    name: '',
+    gender: '',
+    section: '',
+    hobby: ''
+  });
+
+  const handleInputChange = (e) => {  // handle changes in the input fields
+    const { name, value } = e.target;
+    setNewStudent((prev) => ({
+      ...prev,      // Retain previous state values
+      [name]: value // Update only the specific property
+    }));
+  };
+  
+  const handleAddStudent = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:8000/api/student/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newStudent) // Convert newStudent object to JSON
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add student');
+      }
+      await fetchStudents(); // Refresh the list of students
+      setNewStudent({ name: '', gender: '', section: '', hobby: '' }); // Reset input fields
+    } catch (error) {
+      console.error('Error adding student:', error);
+    }
+  };
+
+
+  //DELETE ======================================== >
   const [deleteId, setDeleteId] = useState('');
 
   const handleDeleteChange = (e) => {
@@ -89,7 +126,7 @@ const App = () => {
         {/* Add Student Form */}
         <div className="col-md-4">
           <h3>Add Student</h3>
-          <form>
+          <form onSubmit={ handleAddStudent }>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Name</label>
               <input
@@ -97,6 +134,8 @@ const App = () => {
                 className="form-control"
                 id="name"
                 name="name"
+                value={newStudent.name}
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -106,6 +145,8 @@ const App = () => {
                 className="form-select"
                 id="gender"
                 name="gender"
+                value={newStudent.gender}
+                onChange={handleInputChange}
                 required
               >
                 <option value="">Select Gender</option>
@@ -120,6 +161,8 @@ const App = () => {
                 className="form-control"
                 id="section"
                 name="section"
+                value={newStudent.section}
+                onChange={handleInputChange}
                 required
               />
             </div>
@@ -130,6 +173,8 @@ const App = () => {
                 className="form-control"
                 id="hobby"
                 name="hobby"
+                value={newStudent.hobby}
+                onChange={handleInputChange}
               />
             </div>
             <button type="submit" className="btn btn-primary">Add Student</button>
