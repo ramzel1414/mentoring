@@ -30,7 +30,17 @@ const postStudent = async (req, res) => {
 
 const updateStudent = async (req, res) => {
   try {
-    const updatedStudent = await Student.findByIdAndUpdate(req.params.id, req.body)
+
+    const updates = Object.fromEntries(
+      Object.entries(req.body).filter(([_, value]) => value !== "")
+    );
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ message: "No valid fields to update." });
+    }
+
+    const updatedStudent = await Student.findByIdAndUpdate(req.params.id, updates)
+    console.log(updatedStudent)
     res.status(200).json(updatedStudent);
   } catch (error) {
     console.log(error)

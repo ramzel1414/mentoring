@@ -33,7 +33,7 @@ const App = () => {
     hobby: ''
   });
 
-  const handleInputChange = (e) => {  // handle changes in the input fields
+  const handleInputChangePost = (e) => {  // handle changes in the input fields
     const { name, value } = e.target;
     setNewStudent((prev) => ({
       ...prev,      // Retain previous state values
@@ -85,6 +85,47 @@ const App = () => {
     }
   };
 
+  // PUT ======================================== >
+  const [newStudentPut, setNewStudentPut] = useState({
+    id: '',
+    name: '',
+    gender: '',
+    section: '',
+    hobby: ''
+  });
+
+  const handleInputChangePut = (e) => {  // handle changes in the input fields
+    const { name, value } = e.target;
+    setNewStudentPut((prev) => ({
+      ...prev,      // Retain previous state values
+      [name]: value // Update only the specific property
+    }));
+  };
+
+  // Log the state whenever it updates
+  useEffect(() => {
+    console.log('Updated state:', newStudentPut);
+  }, [newStudentPut]);
+
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:8000/api/student/${newStudentPut.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newStudentPut) 
+      });
+      console.log(newStudentPut.gender)
+      if (!response.ok) {
+        throw new Error('Failed to update student');
+      }
+      await fetchStudents(); // Refresh the list of students
+    } catch (error) {
+      console.error('Error updating student:', error);
+    }
+  };
 
   return (
     <div className="container mt-5">
@@ -135,7 +176,7 @@ const App = () => {
                 id="name"
                 name="name"
                 value={newStudent.name}
-                onChange={handleInputChange}
+                onChange={handleInputChangePost}
                 required
               />
             </div>
@@ -146,7 +187,7 @@ const App = () => {
                 id="gender"
                 name="gender"
                 value={newStudent.gender}
-                onChange={handleInputChange}
+                onChange={handleInputChangePost}
                 required
               >
                 <option value="">Select Gender</option>
@@ -162,7 +203,7 @@ const App = () => {
                 id="section"
                 name="section"
                 value={newStudent.section}
-                onChange={handleInputChange}
+                onChange={handleInputChangePost}
                 required
               />
             </div>
@@ -174,7 +215,7 @@ const App = () => {
                 id="hobby"
                 name="hobby"
                 value={newStudent.hobby}
-                onChange={handleInputChange}
+                onChange={handleInputChangePost}
               />
             </div>
             <button type="submit" className="btn btn-primary">Add Student</button>
@@ -184,14 +225,16 @@ const App = () => {
         {/* Update Student Form */}
         <div className="col-md-4">
           <h3>Update Student</h3>
-          <form>
+          <form onSubmit={handleUpdateSubmit}>
             <div className="mb-3">
               <label htmlFor="updateId" className="form-label">Student ID</label>
               <input
                 type="text"
                 className="form-control"
                 id="updateId"
+                name="id"
                 required
+                onChange={handleInputChangePut}
               />
             </div>
             <div className="mb-3">
@@ -199,14 +242,18 @@ const App = () => {
               <input
                 type="text"
                 className="form-control"
+                name="name"
                 id="updateName"
+                onChange={handleInputChangePut}
               />
             </div>
             <div className="mb-3">
               <label htmlFor="updateGender" className="form-label">Gender</label>
               <select
                 className="form-select"
+                name='gender'
                 id="updateGender"
+                onChange={handleInputChangePut}
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
@@ -218,7 +265,9 @@ const App = () => {
               <input
                 type="text"
                 className="form-control"
+                name='section'
                 id="updateSection"
+                onChange={handleInputChangePut}
               />
             </div>
             <div className="mb-3">
@@ -227,6 +276,8 @@ const App = () => {
                 type="text"
                 className="form-control"
                 id="updateHobby"
+                name='hobby'
+                onChange={handleInputChangePut}
               />
             </div>
             <div className="mb-3">
